@@ -33,44 +33,44 @@
 
             </el-row>
             <el-row>
-                <el-table :data="tableData" style="width: 100%;margin-top: 8px" border>
-                    <el-table-column type="index" label="#"></el-table-column>
-                    <el-table-column prop="user" width="100px" label="用户名"></el-table-column>
-                    <el-table-column prop="password" width="100px" label="密码">
-                    </el-table-column>
-                    <el-table-column prop="username" width="80px" label="姓名">
-                    </el-table-column>
-                    <el-table-column prop="sex" width="60px" label="性别">
-                    </el-table-column>
-                    <el-table-column prop="tdepartment.name" width="150px" label="院系">
-                    </el-table-column>
-                    <el-table-column prop="sclass.name" width="120px" label="班级">
-                    </el-table-column>
-                    <el-table-column prop="phone" width="150px" label="手机号">
-                    </el-table-column>
-                    <el-table-column prop="email" width="160px" label="邮箱">
-                    </el-table-column>
-                    <el-table-column prop="createTime" width="150px" label="创建时间">
-                        <template slot-scope="scope">
-                            <i class="el-icon-time"></i>
-                            <span style="margin-left: 5px">{{ scope.row.createTime }}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="操作" fixed="right" width="150px">
-                        <template slot-scope="scope">
-                            <el-button
-                                    size="mini"
-                                    @click="edit(scope.row),dialogFormVisible=true">编辑
-                            </el-button>
-                            <el-button
-                                    size="mini"
-                                    type="danger"
-                                    @click="del(scope.row)">删除
-                            </el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </el-row>
+            <el-table :data="tableData" style="width: 100%;margin-top: 8px" border>
+                <el-table-column type="index" label="#"></el-table-column>
+                <el-table-column prop="user" width="100px" label="用户名"></el-table-column>
+                <el-table-column prop="password" width="100px" label="密码">
+                </el-table-column>
+                <el-table-column prop="username" width="80px" label="姓名">
+                </el-table-column>
+                <el-table-column prop="sex" width="60px" label="性别">
+                </el-table-column>
+                <el-table-column prop="tdepartment.name" width="150px" label="院系">
+                </el-table-column>
+                <el-table-column prop="sclass.name" width="120px" label="班级">
+                </el-table-column>
+                <el-table-column prop="phone" width="150px" label="手机号">
+                </el-table-column>
+                <el-table-column prop="email" width="160px" label="邮箱">
+                </el-table-column>
+                <el-table-column prop="createTime" width="150px" label="创建时间">
+                    <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 5px">{{ scope.row.createTime }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" fixed="right" width="150px">
+                    <template slot-scope="scope">
+                        <el-button
+                                size="mini"
+                                @click="edit(scope.row),dialogFormVisible=true">编辑
+                        </el-button>
+                        <el-button
+                                size="mini"
+                                type="danger"
+                                @click="del(scope.row)">删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-row>
         </el-card>
         <el-dialog title="添加用户" center :visible.sync="dialogFormVisibleSave" width="500px" @close="clearSave">
             <el-form :model="addForm" ref="formRef" :rules="formRule">

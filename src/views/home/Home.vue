@@ -40,34 +40,78 @@
                 </el-submenu>
                 <el-submenu index="2">
                     <template slot="title">
-                        <!--图标-->
-                        <i class="el-icon-s-unfold" />
-                        <!--文本-->
+                        <i class="el-icon-school"></i>
+                        <span>学院管理</span>
+                    </template>
+                    <el-menu-item index="departmentList">
+                        <template slot="title">
+                            <span >院系列表</span>
+                        </template>
+                    </el-menu-item>
+                    <el-menu-item index="majorList">
+                        <template slot="title">
+                            <span>专业列表</span>
+                        </template>
+                    </el-menu-item>
+                </el-submenu>
+                <el-submenu index="3">
+                    <template slot="title">
+                        <i class="el-icon-s-operation"></i>
                         <span>班级管理</span>
                     </template>
                     <el-menu-item index="classList">
                         <template slot="title">
-<!--                            <i class="el-icon-s-list"></i>-->
                             <span >班级列表</span>
+                        </template>
+                    </el-menu-item>
+                    <el-menu-item index="addClass">
+                        <template slot="title">
+                            <span>添加班级</span>
+                        </template>
+                    </el-menu-item>
+                    <el-menu-item index="addStudent">
+                        <template slot="title">
+                            <span>添加学生</span>
+                        </template>
+                    </el-menu-item>
+                </el-submenu>
+                <el-submenu index="4">
+                    <template slot="title">
+                        <i class="el-icon-s-grid"></i>
+                        <span>科目管理</span>
+                    </template>
+                    <el-menu-item index="">
+                        <template slot="title">
+                            <span >科目列表</span>
                         </template>
                     </el-menu-item>
                     <el-menu-item index="">
                         <template slot="title">
-                            <!--图标-->
-<!--                            <i class="el-icon-edit-outline"></i>-->
-                            <!--文本-->
-                            <span>添加班级</span>
+                            <span>添加科目</span>
                         </template>
                     </el-menu-item>
-<!--                    <el-menu-item index="">-->
+                </el-submenu>
+           <!--     <el-submenu index="1-4">
+                    <template slot="title">
+                        <icon class="el-icon-camera"/>
+                    <span>选项4</span>
+                    </template>
+                    <el-menu-item index="1-4-1">选项1</el-menu-item>
+                </el-submenu>-->
+                <el-menu-item index="scores">
+                        <i class="el-icon-s-marketing"></i>
+                        <span slot="title">成绩管理</span>
+<!--                    <el-menu-item index="classList">-->
 <!--                        <template slot="title">-->
-<!--                            &lt;!&ndash;图标&ndash;&gt;-->
-<!--                            <i class="el-icon-edit-outline"></i>-->
-<!--                            &lt;!&ndash;文本&ndash;&gt;-->
-<!--                            <span>班级选课</span>-->
+<!--                            <span >科目列表</span>-->
 <!--                        </template>-->
 <!--                    </el-menu-item>-->
-                </el-submenu>
+<!--                    <el-menu-item index="addClass">-->
+<!--                        <template slot="title">-->
+<!--                            <span>添加科目</span>-->
+<!--                        </template>-->
+<!--                    </el-menu-item>-->
+                </el-menu-item>
                 <el-menu-item index="log">
                         <i class="el-icon-coin" />
                         <span slot="title">日志信息</span>
@@ -93,6 +137,9 @@
             <el-main>
                 <router-view></router-view>
             </el-main>
+            <template>
+                <el-backtop target=".page-component__scroll .el-scrollbar__wrap"></el-backtop>
+            </template>
         </el-container>
     </el-container>
 </template>
@@ -108,7 +155,7 @@
     },
       mounted() {
           this.user=window.sessionStorage.getItem('user')
-          console.log(window.sessionStorage.getItem('user'))
+          // console.log(window.sessionStorage.getItem('user'))
       },
     methods:{
       logout(){
