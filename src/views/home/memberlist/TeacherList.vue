@@ -42,9 +42,9 @@
                 </el-table-column>
                 <el-table-column prop="sex" width="60px" label="性别">
                 </el-table-column>
-                <el-table-column prop="tdepartment.name" width="150px" label="院系">
+                <el-table-column prop="tDepartment.name" width="150px" label="院系">
                 </el-table-column>
-                <el-table-column prop="sclass.name" width="120px" label="班级">
+                <el-table-column prop="sClass.name" width="120px" label="班级">
                 </el-table-column>
                 <el-table-column prop="phone" width="150px" label="手机号">
                 </el-table-column>
@@ -237,7 +237,7 @@
         methods:{
             findDepartments() {
                 this.$axios.get('/api/department/findAllDepartments').then((res) => {
-                    // console.log(res.data.data)
+                    // console.log(res.data.data);
                     this.options = res.data.data
                 })
             },

@@ -75,42 +75,17 @@
                         </template>
                     </el-menu-item>
                 </el-submenu>
-                <el-submenu index="4">
-                    <template slot="title">
-                        <i class="el-icon-s-grid"></i>
-                        <span>科目管理</span>
-                    </template>
-                    <el-menu-item index="">
-                        <template slot="title">
-                            <span >科目列表</span>
-                        </template>
-                    </el-menu-item>
-                    <el-menu-item index="">
-                        <template slot="title">
-                            <span>添加科目</span>
-                        </template>
-                    </el-menu-item>
-                </el-submenu>
-           <!--     <el-submenu index="1-4">
-                    <template slot="title">
-                        <icon class="el-icon-camera"/>
-                    <span>选项4</span>
-                    </template>
-                    <el-menu-item index="1-4-1">选项1</el-menu-item>
-                </el-submenu>-->
+                <el-menu-item index="courseList">
+                    <i class="el-icon-s-grid"></i>
+                    <span slot="title">科目管理</span>
+                </el-menu-item>
                 <el-menu-item index="scores">
                         <i class="el-icon-s-marketing"></i>
                         <span slot="title">成绩管理</span>
-<!--                    <el-menu-item index="classList">-->
-<!--                        <template slot="title">-->
-<!--                            <span >科目列表</span>-->
-<!--                        </template>-->
-<!--                    </el-menu-item>-->
-<!--                    <el-menu-item index="addClass">-->
-<!--                        <template slot="title">-->
-<!--                            <span>添加科目</span>-->
-<!--                        </template>-->
-<!--                    </el-menu-item>-->
+                </el-menu-item>
+                <el-menu-item index="alarming">
+                    <i class="el-icon-s-comment"></i>
+                    <span slot="title">预警管理</span>
                 </el-menu-item>
                 <el-menu-item index="log">
                         <i class="el-icon-coin" />
@@ -121,14 +96,12 @@
                         <span slot="title">项目文档</span>
                 </el-menu-item>
             </el-menu>
-
         </el-aside>
 
         <el-container>
             <!--右侧头部-->
             <el-header height="50px">
                 <div class="user-logout">
-
                 <span  class="user">学生: {{ user}}</span><el-button type="info" plain @click="logout" style="font-size: 15px">退出</el-button>
                 </div>
             </el-header>
@@ -137,9 +110,7 @@
             <el-main>
                 <router-view></router-view>
             </el-main>
-            <template>
-                <el-backtop target=".page-component__scroll .el-scrollbar__wrap"></el-backtop>
-            </template>
+
         </el-container>
     </el-container>
 </template>

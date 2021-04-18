@@ -62,7 +62,7 @@
                     departmentId:'',
                     majorId:'',
                     name:'',
-                }
+                },
             }
         },
         mounted(){

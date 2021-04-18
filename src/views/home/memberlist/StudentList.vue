@@ -20,7 +20,7 @@
                 <el-col :span="6">
                     <el-select v-model="classId" placeholder="请选择班级">
                         <el-option
-                                v-for="item in classes"
+                                v-for="item in classList"
                                 :key="item.classId"
                                 :label="item.name"
                                 :value="item.classId">
@@ -33,7 +33,7 @@
                     </el-input>
                 </el-col>
                 <el-col :span="6">
-                    <el-button type="success" >搜索</el-button>
+                    <el-button type="success" @click="query(departmentId,classId)"  >搜索</el-button>
                     <el-button type="primary" @click="exportExcel">导出Excel表格</el-button>
                 </el-col>
 
@@ -95,12 +95,14 @@
 </template>
 
 <script>
+    import qs from 'qs'
     export default {
         name: "Student",
         data(){
             return{
                 departmentId:'',
                 classId:'',
+                classList:[],
                 departments:[],
                 classes:[],
                 tableData:[
@@ -159,6 +161,7 @@
 
         mounted(){
             this.findDepartments();
+            this.findClassList();
             this.getStudentPage();
         },
         methods:{
@@ -167,7 +170,7 @@
                 {
                     this.total=res.data.data.totalElements;
                     this.tableData=res.data.data.content
-                    console.log(res.data)
+                    // console.log(res.data)
                 }).catch(err=>{
                     console.log(err)
                 })
@@ -182,7 +185,7 @@
                const pageNum=e-1
                 this.$axios.get('/api/student/findStudentPage?pageSize='+this.pageSize+"&pageNum="+pageNum+"&str=id").then((res)=>{
                     this.tableData=res.data.data.content
-                    console.log(res);
+                    // console.log(res);
                 })
                 console.log(`当前页: ${e}`);
             },
@@ -244,8 +247,55 @@
                         className:this.tableData[i].sClass.name,majorName:this.tableData[i].majors.name,
                         phone:this.tableData[i].phone,email:this.tableData[i].email})
                 }
-              console.log(list)
-            }
+              // console.log(list)
+            },
+            del(e){
+                const those = this
+                this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    console.log(e.id)
+                    those.$axios.delete('/api/student/delStudent/' + e.id).then((res) => {
+                        // console.log(res)
+                        if (res.data.code == 200) {
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!',
+                            })
+                            window.location.reload()
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                message: '删除异常'
+                            });
+                        }
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+                console.log(e);
+            },
+            edit(e){
+                console.log(e)
+            },
+            query(departmentId,classId){
+               const data=qs.stringify({'departmentId':departmentId,'classId':classId});
+               this.$axios.post('/api/student/findByDepartmentIdOrClassId',data).then((res)=>{
+                   this.tableData=res.data.data;
+               })
+                console.log(departmentId,classId)
+            },
+            findClassList() {
+                this.$axios.get('/api/class/findClassList').then((res)=>{
+                    this.classList=res.data.data;
+                    // console.log(res)
+                })
+            },
         }
     }
 </script>

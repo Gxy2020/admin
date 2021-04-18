@@ -4,7 +4,10 @@ import './plugins/element.js'
 import router from './router'
 import './assets/css/global.css'
 import './icons';
-import axios from 'axios'
+//导入echarts并且使用
+// import echarts from 'echarts'
+// Vue.prototype.$echarts = echarts;
+
 // // eslint-disable-next-line no-unused-vars
 // import Blob from './assets/excel/Blob'
 // // eslint-disable-next-line no-unused-vars
@@ -24,7 +27,7 @@ router.afterEach(() => {
 })
 
 
-
+import axios from 'axios'
 Vue.prototype.$axios=axios
 // axios.defaults.baseURL='http://localhost:8888'
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';

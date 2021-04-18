@@ -14,10 +14,14 @@ import Text from "../views/home/Text";
 import ClassList from "../views/home/class/ClassList";
 import AddClass from "../views/home/class/AddClass";
 import AddStudent from "../views/home/class/AddStudent";
+import CourseList from "../views/home/course/CourseList";
 import Log from "../views/home/log/Log";
+import Scores from "../views/home/scores/Scores";
+import ScoreECharts from "../views/home/echars/ScoreECharts";
 Vue.use(VueRouter)
 
 const routes = [
+    {path:'/scoreECharts',component:ScoreECharts},
     {path: '/', redirect: '/login'},
     {path: '/login', component: Login},
     {
@@ -34,6 +38,8 @@ const routes = [
             {path: '/classList', component: ClassList},
             {path: '/addClass', component: AddClass},
             {path:'/addStudent',component:AddStudent},
+            {path:'/courseList',component:CourseList},
+            {path:'/scores',component:Scores},
             {path:'/log',component:Log},
             {path: '/text', component: Text}
         ]

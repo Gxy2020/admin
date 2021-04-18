@@ -8,22 +8,9 @@
                 </div>
                 <div class="card-panel-description">
                     <div class="card-panel-text">
-
+                        学生人数
                     </div>
-                    <count-to :start-val="0" :end-val="10" :duration="2600" class="card-panel-num" />
-                </div>
-            </div>
-        </el-col>
-        <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-            <div class="card-panel">
-                <div class="card-panel-icon-wrapper icon-message">
-                    <svg-icon icon-class="message" class-name="card-panel-icon" />
-                </div>
-                <div class="card-panel-description">
-                    <div class="card-panel-text">
-                        留言数量
-                    </div>
-                    <count-to :start-val="0" :end-val="msgCount" :duration="2600" class="card-panel-num" />
+                    <count-to :start-val="0" :end-val="studentCount" :duration="2600" class="card-panel-num" />
                 </div>
             </div>
         </el-col>
@@ -34,22 +21,35 @@
                 </div>
                 <div class="card-panel-description">
                     <div class="card-panel-text">
-                        博客数量
+                        学科数目
                     </div>
-                    <count-to :start-val="0" :end-val="blogCount" :duration="2600" class="card-panel-num" />
+                    <count-to :start-val="0" :end-val="courseCount" :duration="2600" class="card-panel-num" />
                 </div>
             </div>
         </el-col>
         <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
             <div class="card-panel">
-                <div class="card-panel-icon-wrapper icon-money">
-                    <svg-icon icon-class="skill" class-name="card-panel-icon" />
+                <div class="card-panel-icon-wrapper icon-message">
+                    <svg-icon icon-class="message" class-name="card-panel-icon" />
                 </div>
                 <div class="card-panel-description">
                     <div class="card-panel-text">
-                        任务清单
+                        预警人数
                     </div>
-                    <count-to :start-val="0" :end-val="5" :duration="2600" class="card-panel-num" />
+                    <count-to :start-val="0" :end-val="20" :duration="2600" class="card-panel-num" />
+                </div>
+            </div>
+        </el-col>
+        <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+            <div class="card-panel">
+                <div class="card-panel-icon-wrapper icon-class">
+                    <svg-icon icon-class="class" class-name="card-panel-icon" />
+                </div>
+                <div class="card-panel-description">
+                    <div class="card-panel-text">
+                       班级数目
+                    </div>
+                    <count-to :start-val="0" :end-val="classCount" :duration="2600" class="card-panel-num" />
                 </div>
             </div>
         </el-col>
@@ -66,8 +66,9 @@
         },
         data(){
           return{
-              msgCount:0,
-              blogCount:0
+              studentCount:0,
+              classCount:0,
+              courseCount:0
           }
 
         },
@@ -76,7 +77,15 @@
         },
         methods:{
             getData(){
-
+                this.$axios.get('/api/student/findStudentCount').then((res)=>{
+                    this.studentCount=res.data.data
+                });
+                this.$axios.get('/api/counsellor/findCourseCount').then((res)=>{
+                    this.courseCount=res.data.data
+                });
+                this.$axios.get('/api/class/findClassCount').then((res)=>{
+                    this.classCount=res.data.data
+                });
             }
         }
     }
@@ -121,8 +130,8 @@
                     background: #f4516c;
                 }
 
-                .icon-shopping {
-                    background: #34bfa3
+                .icon-class{
+                    background:#3980C9;
                 }
             }
 
