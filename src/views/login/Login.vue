@@ -46,117 +46,129 @@
 </template>
 
 <script>
-  import qs from 'qs'
+    import qs from 'qs'
 
-  export default {
-    name: 'Login',
-    data() {
-      return {
-        //这是登录表单的数据绑定对象
-        loginForm: {
-          user: '',
-          password: '',
-          seccode: ''
+    export default {
+        name: 'Login',
+        data() {
+            return {
+                //这是登录表单的数据绑定对象
+                loginForm: {
+                    user: '',
+                    password: '',
+                    seccode: ''
+                },
+                ip: '',
+                checkCode: '',
+                //表单验证规则
+                loginFormRules: {
+                    user: [
+                        {required: true, message: '请输入用户名', trigger: 'blur'},
+                        {min: 3, max: 10, message: '长度在 3 到 10个字符', trigger: 'blur'}
+                    ],
+                    password: [
+                        {required: true, message: '请输入密码', trigger: 'blur'},
+                        {min: 3, max: 12, message: '长度在 3 到 10个字符', trigger: 'blur'}
+                    ]
+                },
+                selectValue: '1',
+                url: {
+                    1: '/api/student/login',
+                    2: '/api/teacher/login',
+                    3: '/api/counsellor/login',
+                    4: '/api/admin/login'
+                },
+                push: {
+                    1:'/shome',
+                    2:'/thome',
+                    3:'/chome',
+                    4:'/home'
+                },
+                options: [{
+                    value: '1',
+                    label: '学生'
+                }, {
+                    value: '2',
+                    label: '班主任'
+                },
+                    {
+                        value: '3',
+                        label: '辅导员'
+                    },
+                    {
+                        value: '4',
+                        label: '管理员'
+                    }]
+            }
         },
-        ip: '',
-        checkCode: '',
-        //表单验证规则
-        loginFormRules: {
-          user: [
-            { required: true, message: '请输入用户名', trigger: 'blur' },
-            { min: 3, max: 10, message: '长度在 3 到 10个字符', trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: '请输入密码', trigger: 'blur' },
-            { min: 3, max: 12, message: '长度在 3 到 10个字符', trigger: 'blur' }
-          ]
+        mounted() {
+            this.createCode()
         },
-        selectValue: '4',
-        url: {
-          1: '/api/student/login',
-          2: '/api/teacher/login',
-          3: '/api/counsellor/login',
-          4: '/api/admin/login'
+        methods: {
+            //验证码生成返回
+            createCode() {
+                let code = '';
+                const codeLength = 4 //验证码的长度
+                const random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+                    'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'); //随机数
+                for (let i = 0; i < codeLength; i++) { //循环操作
+                    let index = Math.floor(Math.random() * 36) //取得随机数的索引（0~35）
+                    code += random[index] //根据索引取得随机数加到code上
+                }
+                this.checkCode = code //把code值赋给验证码
+            },
+            //重置方法
+            resetForm() {
+                // console.log(this);
+
+                this.$refs.loginRef.resetFields()
+            },
+            //    登录
+            login() {
+                var selectValue = this.selectValue;
+                // if (this.loginForm.seccode != this.checkCode) {
+                //     this.$message({
+                //         message: "验证码错误，注意大写字母",
+                //         type: "warning"
+                //     });
+                //     this.createCode();
+                //     return false;
+                // }
+                this.$refs.loginRef.validate(async valid => {
+                    if (!valid) return;
+                    // console.log(selectValue)
+                    // console.log(this.url[selectValue])
+                    var api = this.url[selectValue];
+                    const {data: res} = await this.$axios.post(api, qs.stringify(this.loginForm));
+                    // console.log(res);
+                    if (res.code !== 200) return this.$message.error('用户名或密码错误');
+                    this.$message.success('登录成功');
+                    window.sessionStorage.setItem('token', res.data.token);
+                    window.sessionStorage.setItem('user', res.data.user.user);
+                    if (selectValue==3){
+                    window.sessionStorage.setItem('departmentId',res.data.user.department.departmentId);
+                    }
+                    if (selectValue==2){
+                        window.sessionStorage.setItem('classId',res.data.user.sClass.classId);
+                    }
+                    // console.log(res.data.user.department.departmentId);
+                    console.log('跳转的路由为:',this.push[selectValue]);
+                    this.$router.push(this.push[selectValue]);
+
+
+                    // const {data: res}=await this.$axios.post('/api/admin/login',qs.stringify(this.loginForm));
+                    // console.log(res);
+                    // if (res.code !== 200) return this.$message.error("用户名或密码错误");
+                    // this.$message.success("登录成功");
+                    // window.sessionStorage.setItem('token',res.data.token);
+                    // console.log(window.sessionStorage.getItem('token'));
+                    // this.$router.push('/');
+                })
+            }
+
         }
-        ,
-        options: [{
-          value: '1',
-          label: '学生'
-        }, {
-          value: '2',
-          label: '班主任'
-        },
-          {
-            value: '3',
-            label: '辅导员'
-          },
-          {
-            value: '4',
-            label: '管理员'
-          }]
-      }
-    },
-    mounted() {
-      this.createCode()
-    },
-    methods: {
-      //验证码生成返回
-      createCode() {
-        let code = ''
-        const codeLength = 4 //验证码的长度
-        const random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
-          'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z') //随机数
-        for (let i = 0; i < codeLength; i++) { //循环操作
-          let index = Math.floor(Math.random() * 36) //取得随机数的索引（0~35）
-          code += random[index] //根据索引取得随机数加到code上
-        }
-        this.checkCode = code //把code值赋给验证码
-      },
-      //重置方法
-      resetForm() {
-        // console.log(this);
-
-        this.$refs.loginRef.resetFields()
-      },
-      //    登录
-      login() {
-        var selectValue = this.selectValue
-        // if (this.loginForm.seccode != this.checkCode) {
-        //     this.$message({
-        //         message: "验证码错误，注意大写字母",
-        //         type: "warning"
-        //     });
-        //     this.createCode();
-        //     return false;
-        // }
-        this.$refs.loginRef.validate(async valid => {
-          if (!valid) return
-          // console.log(selectValue)
-          // console.log(this.url[selectValue])
-          var api = this.url[selectValue]
-          const { data: res } = await this.$axios.post(api, qs.stringify(this.loginForm))
-          console.log(res)
-          if (res.code !== 200) return this.$message.error('用户名或密码错误')
-          this.$message.success('登录成功')
-          window.sessionStorage.setItem('token', res.data.token)
-            window.sessionStorage.setItem('user',res.data.user.user)
-          // console.log(window.sessionStorage.getItem('token'))
-          this.$router.push('/home')
-
-
-          // const {data: res}=await this.$axios.post('/api/admin/login',qs.stringify(this.loginForm));
-          // console.log(res);
-          // if (res.code !== 200) return this.$message.error("用户名或密码错误");
-          // this.$message.success("登录成功");
-          // window.sessionStorage.setItem('token',res.data.token);
-          // console.log(window.sessionStorage.getItem('token'));
-          // this.$router.push('/');
-        })
-      }
 
     }
-
-  }
 
 </script>
 

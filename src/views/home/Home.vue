@@ -102,7 +102,7 @@
             <!--右侧头部-->
             <el-header height="50px">
                 <div class="user-logout">
-                <span  class="user">学生: {{ user}}</span><el-button type="info" plain @click="logout" style="font-size: 15px">退出</el-button>
+                <span  class="user">管理员: {{ user}}</span><el-button type="info" plain @click="logout" style="font-size: 15px">退出</el-button>
                 </div>
             </el-header>
             <!--            <el-></el->-->

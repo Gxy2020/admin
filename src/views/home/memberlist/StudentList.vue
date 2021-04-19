@@ -153,7 +153,7 @@
                     }*/
                 ],
                 pageSize:5,
-                pageSizees:[5,10,20],
+                pageSizees:[5,10,20,40],
                 total:10,
                 currentPage1: 0,
             }

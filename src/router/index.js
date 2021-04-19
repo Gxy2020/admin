@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from "../views/login/Login";
+
+//系统管理员路由
 import Home from "../views/home/Home";
 import Welcome from "../views/home/welcome/Welcome";
 import AdminList from "../views/home/memberlist/AdminList";
 import CounsellorList from "../views/home/memberlist/CounsellorList";
 import TeacherList from "../views/home/memberlist/TeacherList";
 import StudentList from "../views/home/memberlist/StudentList";
-
 import DepartmentList from "../views/home/department/DepartmentList";
 import MajorList from "../views/home/department/MajorList";
 import Text from "../views/home/Text";
@@ -17,11 +18,28 @@ import AddStudent from "../views/home/class/AddStudent";
 import CourseList from "../views/home/course/CourseList";
 import Log from "../views/home/log/Log";
 import Scores from "../views/home/scores/Scores";
-import ScoreECharts from "../views/home/echars/ScoreECharts";
-Vue.use(VueRouter)
+//辅导员课客户端路由
+import Chome from "../views/home/cHome/Chome";
+import Students from "../views/home/cHome/student/Students";
+import SaveStudent from "../views/home/cHome/student/SaveStudent";
+import StudentScores from "../views/home/cHome/socre/StudentScores";
+import CWelcome from "../views/home/cHome/welcome/CWelcome";
+import CClass from "../views/home/cHome/classes/CClass";
+
+//班主任路由跳转
+import Thome from "../views/home/tHome/Thome";
+import TWelcome from "../views/home/tHome/twelcome/TWelcome";
+import ClassScore from "../views/home/tHome/score/ClassScore";
+import Studentc from "../views/home/tHome/student/Studentc";
+import ClassToStudent from "../views/home/tHome/student/ClassToStudent";
+//学生路由
+import Shome from "../views/home/sHome/Shome";
+import SWelcome from "../views/home/sHome/swelcome/SWelcome";
+import Messages from "../views/home/sHome/message/Messages";
+import MyScore from "../views/home/sHome/score/MyScore";
+Vue.use(VueRouter);
 
 const routes = [
-    {path:'/scoreECharts',component:ScoreECharts},
     {path: '/', redirect: '/login'},
     {path: '/login', component: Login},
     {
@@ -43,6 +61,32 @@ const routes = [
             {path:'/log',component:Log},
             {path: '/text', component: Text}
         ]
+    },
+    {path:'/chome',component:Chome,
+        redirect: '/cwelcome',
+        children: [
+            {path:'/cWelcome',component:CWelcome},
+            {path:'/students',component:Students},
+            {path:'/saveStudent',component:SaveStudent},
+            {path:'/studentScores',component:StudentScores},
+            {path:'/cclass',component:CClass},
+        ]},
+        {path:'/thome',component:Thome,
+        redirect: '/twelcome',
+        children: [
+            {path:'/twelcome',component:TWelcome},
+            {path:'/studentc',component:Studentc},
+            {path:'/classScore',component:ClassScore},
+            {path:'/classToStudent',component:ClassToStudent}
+        ],
+    },
+    {path:'/shome',component:Shome,
+        redirect:'/sWelcome',
+    children:[
+        {path:'/sWelcome',component:SWelcome},
+        {path:'/myScore',component:MyScore},
+        {path:'/messages',component:Messages}
+    ]
     }
 ]
 
