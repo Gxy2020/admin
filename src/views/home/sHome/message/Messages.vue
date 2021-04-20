@@ -5,28 +5,39 @@
         <el-breadcrumb-item>预警信息</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="block">
-        <el-timeline>
-            <el-timeline-item :timestamp="item.createTime" placement="top" v-for="item in messages" :key="item.id">
-                <el-card>
-                    <h4>预警消息: {{item.source}}</h4>
-                    <p>{{item.messages}}  <el-divider direction="vertical"></el-divider>{{item.createTime}}</p>
-                </el-card>
-            </el-timeline-item>
+        <el-row>
 
-
-<!--            <el-timeline-item timestamp="2018/4/3" placement="top">-->
+            <el-col :span="12">
+                <h4 style="color: #1989fa">预约记录:</h4>
+                <el-timeline>
+                    <el-timeline-item :timestamp="item.createTime" placement="top" v-for="item in sendMessages" :key="item.id">
+                        <el-card>
+                            <h4>预约时间: {{item.source==''?'待确认':'已确认'}}</h4>
+                            <p>{{item.messages}}  <el-divider direction="vertical"></el-divider><span style="font-size: 8px;float: right">发起时间 : {{item.createTime}}</span></p>
+                        </el-card>
+                    </el-timeline-item>
+                </el-timeline>
+            </el-col>
+            <el-col :span="12">
+                <h4 style="color: chocolate">预警消息:</h4>
+                <el-timeline>
+                    <el-timeline-item :timestamp="item.createTime" placement="top" v-for="item in messages" :key="item.id">
+                        <el-card>
+                            <h4>预警消息: {{item.source}}</h4>
+                            <p>{{item.messages}}  <el-divider direction="vertical"></el-divider>{{item.createTime}}</p>
+                        </el-card>
+                    </el-timeline-item>
+                </el-timeline>
+            </el-col>
+        </el-row>
+<!--        <el-timeline>-->
+<!--            <el-timeline-item :timestamp="item.createTime" placement="top" v-for="item in messages" :key="item.id">-->
 <!--                <el-card>-->
-<!--                    <h4>更新 Github 模板</h4>-->
-<!--                    <p>王小虎 提交于 2018/4/3 20:46</p>-->
+<!--                    <h4>预警消息: {{item.source}}</h4>-->
+<!--                    <p>{{item.messages}}  <el-divider direction="vertical"></el-divider>{{item.createTime}}</p>-->
 <!--                </el-card>-->
 <!--            </el-timeline-item>-->
-<!--            <el-timeline-item timestamp="2018/4/2" placement="top">-->
-<!--                <el-card>-->
-<!--                    <h4>更新 Github 模板</h4>-->
-<!--                    <p>王小虎 提交于 2018/4/2 20:46</p>-->
-<!--                </el-card>-->
-<!--            </el-timeline-item>-->
-        </el-timeline>
+<!--        </el-timeline>-->
     </div>
 </div>
 </template>
@@ -37,7 +48,9 @@
         data(){
             return{
                 user:window.sessionStorage.getItem('user'),
-                messages:''
+                messages:'',
+                sendMessages:'',
+                stats:''
             }
         },
         mounted(){
@@ -46,8 +59,12 @@
         methods:{
             getMessage(){
                 this.$axios.get('/api/message/findByReceiverId/'+this.user).then((res)=>{
-                    console.log(res.data.data)
+                    // console.log(res.data.data);
                     this.messages=res.data.data.reverse();
+                });
+                this.$axios.get('/api/message/findBySendId/'+this.user).then((res)=>{
+                    console.log(res.data.data);
+                    this.sendMessages=res.data.data.reverse();
                 })
             }
         }

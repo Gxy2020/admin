@@ -140,7 +140,7 @@
                     // console.log(this.url[selectValue])
                     var api = this.url[selectValue];
                     const {data: res} = await this.$axios.post(api, qs.stringify(this.loginForm));
-                    // console.log(res);
+                    console.log(res);
                     if (res.code !== 200) return this.$message.error('用户名或密码错误');
                     this.$message.success('登录成功');
                     window.sessionStorage.setItem('token', res.data.token);
@@ -150,6 +150,8 @@
                     }
                     if (selectValue==2){
                         window.sessionStorage.setItem('classId',res.data.user.sClass.classId);
+                    }if (selectValue==1){
+                        window.sessionStorage.setItem('departmentId',res.data.user.departments.departmentId)
                     }
                     // console.log(res.data.user.department.departmentId);
                     console.log('跳转的路由为:',this.push[selectValue]);

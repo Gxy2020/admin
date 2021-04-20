@@ -2,7 +2,7 @@
     <div>
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/welcome' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>成员员列表</el-breadcrumb-item>
+            <el-breadcrumb-item>成员列表</el-breadcrumb-item>
             <el-breadcrumb-item>学生列表</el-breadcrumb-item>
         </el-breadcrumb>
         <el-card>

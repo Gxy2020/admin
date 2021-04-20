@@ -25,7 +25,8 @@ import SaveStudent from "../views/home/cHome/student/SaveStudent";
 import StudentScores from "../views/home/cHome/socre/StudentScores";
 import CWelcome from "../views/home/cHome/welcome/CWelcome";
 import CClass from "../views/home/cHome/classes/CClass";
-
+import AlarmingList from "../views/home/cHome/alarming/AlarmingList";
+import HelpList from "../views/home/cHome/help/HelpList";
 //班主任路由跳转
 import Thome from "../views/home/tHome/Thome";
 import TWelcome from "../views/home/tHome/twelcome/TWelcome";
@@ -70,6 +71,8 @@ const routes = [
             {path:'/saveStudent',component:SaveStudent},
             {path:'/studentScores',component:StudentScores},
             {path:'/cclass',component:CClass},
+            {path:'/alarmingList',component:AlarmingList},
+            {path:'/helpList',component:HelpList}
         ]},
         {path:'/thome',component:Thome,
         redirect: '/twelcome',

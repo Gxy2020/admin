@@ -36,6 +36,14 @@
                         <i class="el-icon-s-marketing"></i>
                         <span slot="title">成绩管理</span>
                     </el-menu-item>
+                    <el-menu-item index="alarmingList">
+                        <i class="el-icon-s-order"></i>
+                        <span slot="title">预警记录</span>
+                    </el-menu-item>
+                    <el-menu-item index="helpList">
+                        <i class="el-icon-time"></i>
+                        <span slot="title">线下预约</span>
+                    </el-menu-item>
                 </el-menu>
             </el-aside>
 

@@ -15,7 +15,7 @@
                 <el-card class="box-card">
                     <div slot="header" class="clearfix">
                         <span>个人信息</span>
-                        <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                        <el-button style="float: right; padding: 3px 0" type="text" @click="dialogFormVisible=true,edit(tableDate)" >修改信息</el-button>
                     </div>
                     <table style="width: 100%" class="myTable">
                         <tr>
@@ -50,71 +50,73 @@
                 </el-card>
             </el-col>
             <el-col :span="12">
-                <el-card class="box-card" style="height: 460px">
-                    <div class="block">
-                        <el-timeline>
-                            <el-timeline-item
-                                    v-for="(activity, index) in activities"
-                                    :key="index"
-                                    :icon="activity.icon"
-                                    :type="activity.type"
-                                    :color="activity.color"
-                                    :size="activity.size"
-                                    :timestamp="activity.timestamp">
-                                {{activity.content}}
-                            </el-timeline-item>
-                        </el-timeline>
+                <el-card class="box-card" style="height: 510px">
+                    <div slot="header" class="clearfix">
+                        <span>挂科人数占比</span>
                     </div>
+                    <div id="main" :style="{width: '430px', height: '400px'}"></div>
                 </el-card>
             </el-col>
         </el-row>
+        <el-dialog title="修改个人信息" :visible.sync="dialogFormVisible">
+            <el-form :model="form">
+                <el-form-item label="账号"  :label-width="formLabelWidth">
+                    <el-input v-model="form.user" disabled autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="密码"  :label-width="formLabelWidth">
+                    <el-input v-model="form.password"  autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="姓名"  :label-width="formLabelWidth">
+                    <el-input v-model="form.username"  autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="性别"  :label-width="formLabelWidth">
+                    <el-select placeholder="请选择性别" v-model="form.sex" >
+                        <el-option
+                                v-for="item in sex"
+                                :key="item.id"
+                                :label="item.value"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="学院"  :label-width="formLabelWidth">
+                    <el-input  disabled v-model="departmentName" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="手机号"  :label-width="formLabelWidth">
+                    <el-input v-model="form.phone"  autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱"  :label-width="formLabelWidth">
+                    <el-input v-model="form.email"  autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer" style="text-align: center">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="updateUser(form),dialogFormVisible = false">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
+    import echarts from 'echarts'
+    import qs from 'qs'
     export default {
         name: "CWelcome",
         data() {
             return {
+                sex: [{id: 1, value: '男'}, {id: 2, value: '女'}],
+                dialogFormVisible:false,
                 data: '服务时间:8:00-20:00',
                 message: '五一放假,暂停服务,请提前录入部分成绩',
-                activities: [
-                    {
-                    content: '支持使用图标',
-                    timestamp: '2018-04-12 20:46',
-                    size: 'large',
-                    type: 'primary',
-                    icon: 'el-icon-more'
-                }, {
-                    content: '支持自定义颜色',
-                    timestamp: '2018-04-03 20:46',
-                    color: '#0bbd87'
-                },
-                    {
-                        content: '支持自定义尺寸',
-                        timestamp: '2018-04-03 20:46',
-                        size: 'large'
-                    },
-                    {
-                        content: '支持自定义尺寸',
-                        timestamp: '2018-04-03 20:46',
-                        size: 'large'
-                    },
-                    {
-                        content: '支持自定义尺寸',
-                        timestamp: '2018-04-03 20:46',
-                        size: 'large'
-                    },{
-                        content: '默认样式的节点',
-                        timestamp: '2018-04-03 20:46'
-                    }],
                 tableDate: [],
                 user: window.sessionStorage.getItem('user'),
-                departmentName: ''
+                departmentName: '',
+                form:[],
+                formLabelWidth: '100px'
             }
         },
         mounted() {
-
+            this.initChart();
             this.getUser();
         },
         methods: {
@@ -122,14 +124,66 @@
                 this.$axios.get('/api/counsellor/findByUser/' + this.user).then((res) => {
                     this.tableDate = res.data.data;
                     this.departmentName = res.data.data.department.name;
-                    console.log(this.tableDate)
+                    // console.log(this.tableDate)
                 })
+            },
+            edit(e){
+              // console.log(e)
+                this.form=e
+                // console.log(this.form)
+            },
+            updateUser(e){
+               const data=qs.stringify({'password':e.password,'username':e.username,
+                   'sex':e.sex,'phone':e.phone,'email':e.email,'id':e.id});
+               this.$axios.post('/api/counsellor/updateCounsellor',data).then((res)=>{
+                   if (res.data.code==200){
+                       this.$notify({
+                           type:"success",
+                           message:'修改成功'
+                       })
+                       this.getUser();
+                   }else {
+                       this.$notify({
+                           type:"error",
+                           message:'修改失败'
+                       })
+                   }
+                   // console.log(res.data)
+               })
+                console.log(data)
+            },
+            initChart() {
+                let  myChart = echarts.init(document.getElementById("main"));
+
+                this.$axios.get('/api/score/findCodeFailed').then((res)=>{
+                    // console.log(res);
+
+                    myChart.setOption({
+                        roseType: 'angle',
+                        tooltip: {},
+                        legend: {
+                            left: 'center',
+                            bottom: '10',
+                            data: res.data.data.name,
+                        },
+                        series: [
+                            {
+                                name: '挂科人数',
+                                type: 'pie',
+                                radius: '55%',
+                                data:res.data.data,
+                                animationEasing: 'cubicInOut',
+                            }
+                        ]
+                    });
+                })
+
             }
         }
     }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
     .el-card {
         margin: 8px;
     }
@@ -148,6 +202,12 @@
     .myTable th {
         border: 1px solid #cad9ea;
         color: #666;
-        height: 50px;
+        height: 57.5px;
     }
+    .el-dialog{
+      width: 500px;
+    }
+    /*.el-form{*/
+    /*    width: 500px;*/
+    /*}*/
 </style>
